@@ -1,66 +1,365 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ecommerce Store API - Laravel 12 Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust RESTful API for an eCommerce platform built with Laravel 12, featuring authentication, product management, order processing, and admin dashboard capabilities.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Authentication & Authorization
+- User registration and login with JWT-like Sanctum tokens
+- Role-based access control (Admin/Customer)
+- Profile management and password change
+- Email unique validation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Customer Features
+- Browse products with filtering and search
+- View product details
+- Place orders with multiple items
+- View order history and order details
+- Update profile information
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Admin Features
+- Complete CRUD operations for categories
+- Complete CRUD operations for products
+- Stock management
+- Order status management (pending, processing, shipped, delivered, cancelled)
+- Customer management (view, update, delete, status toggle)
+- Dashboard statistics and analytics
+- Low stock product alerts
 
-## Learning Laravel
+### Additional Features
+- Image upload for categories and products
+- Soft deletes for safe data removal
+- Pagination, sorting, and filtering on all listing endpoints
+- Order number generation
+- Stock tracking with automatic updates on orders
+- Tax calculation (10%)
+- Shipping fee management
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📋 Prerequisites
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 8.2
+- Composer
+- MySQL >= 5.7 or MariaDB >= 10.2
+- Node.js & NPM (for frontend integration)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠 Installation
 
-## Laravel Sponsors
+### Step 1: Clone and Setup
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Create new Laravel project
+composer create-project laravel/laravel:^12 ecommerceStore
+cd ecommerceStore
 
-### Premium Partners
+# Install required packages
+composer require laravel/sanctum
+composer require spatie/laravel-permission
+composer require intervention/image
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Step 2: Environment Configuration
 
-## Contributing
+Create your `.env` file and configure:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```env
+APP_NAME="Ecommerce Store"
+APP_URL=http://localhost:8000
 
-## Code of Conduct
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ecommerce_store_db
+DB_USERNAME=root
+DB_PASSWORD=
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+SANCTUM_STATEFUL_DOMAINS=localhost:5173,localhost:5174
+SESSION_DOMAIN=localhost
+```
 
-## Security Vulnerabilities
+### Step 3: Run Migrations and Seeders
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Run migrations
+php artisan migrate
 
-## License
+# Run seeders (creates admin, categories, products)
+php artisan migrate:fresh --seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Create storage link for images
+php artisan storage:link
+
+# Start the development server
+php artisan serve
+```
+
+## 🔑 Default Admin Credentials
+
+After running seeders, you can login with:
+
+- **Email:** admin@example.com
+- **Password:** password
+
+## 📁 Database Structure
+
+### Tables
+- **users** - User accounts (admin/customer)
+- **categories** - Product categories
+- **products** - Product listings with stock tracking
+- **orders** - Order information
+- **order_items** - Individual items within orders
+- **personal_access_tokens** - Sanctum token management
+
+### Key Relationships
+- Categories have many Products
+- Products belong to Categories
+- Orders belong to Customers (Users)
+- Order Items belong to Orders and Products
+
+## 🔗 API Endpoints
+
+### Public Routes (No Authentication)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/register` | Register new customer |
+| POST | `/api/login` | Login user |
+| GET | `/api/categories` | List all categories |
+| GET | `/api/categories/{id}` | Get category details |
+| GET | `/api/products` | List all products |
+| GET | `/api/products/{id}` | Get product details |
+
+### Protected Routes (Authentication Required)
+
+#### User Profile
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/logout` | Logout user |
+| GET | `/api/profile` | Get user profile |
+| PUT | `/api/profile` | Update profile |
+| PUT | `/api/change-password` | Change password |
+
+#### Orders
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/orders` | List orders (admin: all, customer: own) |
+| POST | `/api/orders` | Create new order |
+| GET | `/api/orders/{id}` | Get order details |
+| GET | `/api/my-orders` | Get customer's orders |
+
+### Admin Only Routes
+
+#### Dashboard
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/dashboard/stats` | Get dashboard statistics |
+
+#### Category Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/categories` | Create category |
+| PUT | `/api/categories/{id}` | Update category |
+| DELETE | `/api/categories/{id}` | Delete category |
+
+#### Product Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/products` | Create product |
+| PUT | `/api/products/{id}` | Update product |
+| DELETE | `/api/products/{id}` | Delete product |
+| PUT | `/api/products/{product}/stock` | Update stock quantity |
+
+#### Order Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| PUT | `/api/orders/{order}/status` | Update order status |
+
+#### Customer Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/customers` | List all customers |
+| GET | `/api/customers/{id}` | Get customer details |
+| PUT | `/api/customers/{id}` | Update customer |
+| PUT | `/api/customers/{user}/status` | Toggle customer status |
+| DELETE | `/api/customers/{user}` | Delete customer |
+
+## 📝 API Usage Examples
+
+### Register a Customer
+
+```bash
+POST /api/register
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "phone": "1234567890",
+    "address": "123 Main St"
+}
+```
+
+### Login
+
+```bash
+POST /api/login
+Content-Type: application/json
+
+{
+    "email": "john@example.com",
+    "password": "password123"
+}
+```
+
+### Create an Order
+
+```bash
+POST /api/orders
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+    "items": [
+        {
+            "product_id": 1,
+            "quantity": 2
+        }
+    ],
+    "shipping_fee": 10.00,
+    "payment_method": "cash_on_delivery",
+    "notes": "Please call before delivery"
+}
+```
+
+### Update Order Status (Admin)
+
+```bash
+PUT /api/orders/1/status
+Authorization: Bearer {admin_token}
+Content-Type: application/json
+
+{
+    "order_status": "processing",
+    "payment_status": "paid"
+}
+```
+
+### Create Product (Admin)
+
+```bash
+POST /api/products
+Authorization: Bearer {admin_token}
+Content-Type: multipart/form-data
+
+{
+    "category_id": 1,
+    "sku": "PROD-001",
+    "name": "Smartphone X",
+    "description": "Latest smartphone with amazing features",
+    "price": 599.99,
+    "cost_price": 450.00,
+    "stock_qty": 50,
+    "active": true,
+    "image": (file)
+}
+```
+
+## 🎯 Query Parameters for Listings
+
+All listing endpoints support pagination, sorting, and filtering:
+
+### Products
+- `search` - Search by name or SKU
+- `category_id` - Filter by category
+- `min_price` - Minimum price filter
+- `max_price` - Maximum price filter
+- `in_stock` - Filter by stock status (true/false)
+- `sort_by` - Sort field (name, price, created_at, etc.)
+- `sort_order` - Sort direction (asc/desc)
+- `per_page` - Items per page (default: 15)
+
+### Orders
+- `order_status` - Filter by status
+- `payment_status` - Filter by payment status
+- `customer_id` - Filter by customer (admin only)
+- `from_date` - Filter orders from date
+- `to_date` - Filter orders until date
+
+### Customers (Admin only)
+- `search` - Search by name, email, or phone
+- `sort_by` - Sort field
+- `sort_order` - Sort direction
+
+## 📊 Dashboard Statistics Response
+
+```json
+{
+    "total_orders": 150,
+    "total_revenue": 45750.00,
+    "total_products": 45,
+    "total_customers": 120,
+    "recent_orders": [...],
+    "low_stock_products": [...],
+    "monthly_revenue": [...],
+    "top_products": [...]
+}
+```
+
+## 🔒 Security Features
+
+- Sanctum token-based authentication
+- Role-based middleware for admin routes
+- Password hashing with bcrypt
+- Input validation using Form Requests
+- Protection against mass assignment
+- SQL injection prevention via Eloquent
+- XSS protection
+
+## 🧪 Testing
+
+```bash
+# Run tests
+php artisan test
+
+# Run specific test
+php artisan test --filter=OrderTest
+```
+
+## 📦 Deployment
+
+### Production Checklist
+
+```bash
+# Optimize configuration
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Set production environment variables
+APP_ENV=production
+APP_DEBUG=false
+
+# Run migrations
+php artisan migrate --force
+```
+
+## 🤝 Support
+
+For issues or questions:
+1. Check the Laravel 12 documentation
+2. Review the API response messages
+3. Ensure all prerequisites are met
+4. Verify database connections
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 👨‍💻 Author
+
+Built with Laravel 12 - A powerful PHP framework for web artisans.
+
+---
+
+**Note:** This is the backend API only. For the frontend implementation, you'll need to connect this API to a frontend application (React, Vue.js, or mobile app).
